@@ -1,0 +1,20 @@
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: golambda/hello-world/
+      Handler: hello-world
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Role: !GetAtt TranscribeTranslateLambdaRole.Arn
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        EventRule:
+          Type: EventBridgeRule # More info about EventBridge Event Source: https://github.com/aws/serverless-application-model/blob/master/versions/2016-10-31.md#eventbridgerule
+          Properties:
+            Pattern:
+              source:
+                - aws.ec2
+              detail-type:
+                - EC2 Instance State-change Notification

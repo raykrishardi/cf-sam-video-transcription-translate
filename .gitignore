@@ -1,0 +1,5 @@
+/.aws-sam/
+/samconfig.toml
+
+# Exclude - they are rebuilt
+template.yaml

@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  cf-sam-video-transcription-translate
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 128
+
+Resources:
+  TranscribeTranslateLambda:
+    !Include ./resources/lambda/lambda.yaml
+  TranscribeTranslateLambdaRole:
+    !Include ./resources/lambda/lambdaRole.yaml
+
+Outputs:
+  TranscribeTranslateLambda:
+    Value: !GetAtt TranscribeTranslateLambda.Arn
+  TranscribeTranslateLambdaIamRole:
+    Value: !GetAtt TranscribeTranslateLambdaRole.Arn
