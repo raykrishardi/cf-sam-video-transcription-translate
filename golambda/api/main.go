@@ -1,9 +1,8 @@
 package main
 
 import (
-	"cf-sam-video-transcription-translate/api/model/aws/ec2"
-	"cf-sam-video-transcription-translate/api/model/aws/ec2/marshaller"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -21,19 +20,27 @@ Parameters:
 
 Output: Stream ([]byte) of the updated AWSEvent after function logic completed.
 */
-func handler(context context.Context, awsEvent ec2.AWSEvent) ([]byte, error) {
-	// Retrieve the ec2 notification from the event
-	ec2InstanceStateChangeNotification := awsEvent.Detail
+// func handler(context context.Context, awsEvent ec2.AWSEvent) ([]byte, error) {
+// 	// Retrieve the ec2 notification from the event
+// 	ec2InstanceStateChangeNotification := awsEvent.Detail
 
-	// Developers write your event-driven business logic code here!
-	fmt.Println("Instance " + ec2InstanceStateChangeNotification.InstanceId + " transitioned to " + ec2InstanceStateChangeNotification.State)
+// 	// Developers write your event-driven business logic code here!
+// 	fmt.Println("Instance " + ec2InstanceStateChangeNotification.InstanceId + " transitioned to " + ec2InstanceStateChangeNotification.State)
 
-	// Make updates to the event payload
-	awsEvent.SetDetailType("HelloWorldFunction updated event of " + awsEvent.DetailType)
+// 	// Make updates to the event payload
+// 	awsEvent.SetDetailType("HelloWorldFunction updated event of " + awsEvent.DetailType)
 
-	// Return event as stream for further processing
-	return marshaller.Marshal(awsEvent)
+// 	// Return event as stream for further processing
+// 	return marshaller.Marshal(awsEvent)
 
+// }
+
+func handler(context context.Context, event interface{}) ([]byte, error) {
+	eventByte, _ := json.Marshal(event)
+	eventStr := string(eventByte)
+	fmt.Println(eventStr)
+
+	return eventByte, nil
 }
 
 func main() {

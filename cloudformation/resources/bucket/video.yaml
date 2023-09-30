@@ -1,3 +1,6 @@
     Type: AWS::S3::Bucket
     Properties:
-        BucketName: !Ref VideoBucketName
+      BucketName: !Ref VideoBucketName
+      NotificationConfiguration:
+        EventBridgeConfiguration:
+          EventBridgeEnabled: true

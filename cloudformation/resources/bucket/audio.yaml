@@ -1,3 +1,6 @@
     Type: AWS::S3::Bucket
     Properties:
-        BucketName: !Ref AudioBucketName
+      BucketName: !Ref AudioBucketName
+      NotificationConfiguration:
+        EventBridgeConfiguration:
+          EventBridgeEnabled: true

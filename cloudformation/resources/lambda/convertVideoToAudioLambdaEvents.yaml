@@ -1,8 +1,15 @@
-        EventRule:
+        S3Event:
           Type: EventBridgeRule # More info about EventBridge Event Source: https://github.com/aws/serverless-application-model/blob/master/versions/2016-10-31.md#eventbridgerule
           Properties:
             Pattern:
               source:
-                - aws.ec2
+                - aws.s3
               detail-type:
-                - EC2 Instance State-change Notification
+                - Object Created
+              detail:
+                bucket:
+                  name:
+                  - !Ref VideoBucketName
+                object:
+                  key:
+                  - suffix: ".mp4"
