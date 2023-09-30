@@ -22,13 +22,13 @@ Resources:
     !Include ./resources/bucket/audio.yaml
   SubtitleBucket:
     !Include ./resources/bucket/subtitle.yaml
-  TranscribeTranslateLambda:
-    !Include ./resources/lambda/lambda.yaml
-  TranscribeTranslateLambdaRole:
-    !Include ./resources/lambda/lambdaRole.yaml
+  ConvertVideoToAudioLambda:
+    !Include ./resources/lambda/convertVideoToAudioLambda.yaml
+  ConvertVideoToAudioLambdaRole:
+    !Include ./resources/lambda/convertVideoToAudioLambdaRole.yaml
 
 Outputs:
-  TranscribeTranslateLambda:
-    Value: !GetAtt TranscribeTranslateLambda.Arn
-  TranscribeTranslateLambdaIamRole:
-    Value: !GetAtt TranscribeTranslateLambdaRole.Arn
+  ConvertVideoToAudioLambda:
+    Value: !GetAtt ConvertVideoToAudioLambda.Arn
+  ConvertVideoToAudioLambdaIamRole:
+    Value: !GetAtt ConvertVideoToAudioLambdaRole.Arn

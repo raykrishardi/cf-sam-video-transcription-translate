@@ -10,7 +10,7 @@
       Path: "/"
       Policies:
         - PolicyName:
-            Fn::Sub: ${AWS::StackName}-TranscribeTranslateLambdaPolicy
+            Fn::Sub: ${AWS::StackName}-ConvertVideoToAudioLambdaPolicy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
