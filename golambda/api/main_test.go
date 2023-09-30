@@ -1,12 +1,13 @@
 package main
 
 import (
+	"cf-sam-video-transcription-translate/api/model/aws/ec2/marshaller"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"os"
 	"testing"
-	"cf-sam-video-transcription-translate/hello-world/model/aws/ec2/marshaller"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -33,7 +34,7 @@ func TestHandler(t *testing.T) {
 			t.Fatal("Everything should be ok")
 		}
 
-		responseEvent, _  := marshaller.UnmarshalEvent(responseStream)
+		responseEvent, _ := marshaller.UnmarshalEvent(responseStream)
 		responseEc2Notification := responseEvent.Detail
 
 		assert.NotEmpty(t, responseEvent)
