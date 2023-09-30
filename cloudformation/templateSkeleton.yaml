@@ -7,7 +7,21 @@ Globals:
     Timeout: 20
     MemorySize: 128
 
+Parameters:
+  VideoBucketName:
+    Type: String
+  AudioBucketName:
+    Type: String
+  SubtitleBucketName:
+    Type: String
+
 Resources:
+  VideoBucket:
+    !Include ./resources/bucket/video.yaml
+  AudioBucket:
+    !Include ./resources/bucket/audio.yaml
+  SubtitleBucket:
+    !Include ./resources/bucket/subtitle.yaml
   TranscribeTranslateLambda:
     !Include ./resources/lambda/lambda.yaml
   TranscribeTranslateLambdaRole:
