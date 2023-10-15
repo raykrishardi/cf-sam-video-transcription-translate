@@ -1,11 +1,21 @@
 package main
 
 import (
+	"cf-sam-video-transcription-translate/api/model/aws/eventbridge"
 	"context"
 	"encoding/json"
-	"fmt"
+	"go/types"
+	"log"
+	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+)
+
+var (
+	AWS_REGION         = os.Getenv("AWS_REGION")
+	SOURCE_BUCKET_NAME = os.Getenv("SOURCE_BUCKET_NAME")
 )
 
 /*
@@ -35,12 +45,43 @@ Output: Stream ([]byte) of the updated AWSEvent after function logic completed.
 
 // }
 
-func handler(context context.Context, event interface{}) ([]byte, error) {
-	eventByte, _ := json.Marshal(event)
-	eventStr := string(eventByte)
-	fmt.Println(eventStr)
+func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
+	eventBytes, _ := json.Marshal(event)
+	log.Println(string(eventBytes))
 
-	return eventByte, nil
+	cfg, err := config.LoadDefaultConfig(ctx)
+	if err != nil {
+		log.Printf("failed to load default config: %s", err)
+		return eventBytes, err
+	}
+
+	s3Client := s3.NewFromConfig(cfg)
+
+	result, err := s3Client.ListObjectsV2(ctx, &s3.ListObjectsV2Input{
+		Bucket: &event.Detail.Bucket.Name,
+	})
+	var contents []types.Object
+	if err != nil {
+		log.Printf("Couldn't list objects in bucket %v. Here's why: %v\n", bucketName, err)
+	}
+
+	log.Println(contents)
+
+	// for _, record := range event.Records {
+	// 	bucket := record.S3.Bucket.Name
+	// 	key := record.S3.Object.URLDecodedKey
+	// 	headOutput, err := s3Client.HeadObject(ctx, &s3.HeadObjectInput{
+	// 		Bucket: &bucket,
+	// 		Key:    &key,
+	// 	})
+	// 	if err != nil {
+	// 		log.Printf("error getting head of object %s/%s: %s", bucket, key, err)
+	// 		return eventBytes, err
+	// 	}
+	// 	log.Printf("successfully retrieved %s/%s of type %s", bucket, key, *headOutput.ContentType)
+	// }
+
+	return eventBytes, nil
 }
 
 func main() {
