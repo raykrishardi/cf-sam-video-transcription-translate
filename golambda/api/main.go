@@ -46,7 +46,7 @@ Output: Stream ([]byte) of the updated AWSEvent after function logic completed.
 
 func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	eventBytes, _ := json.Marshal(event)
-	log.Println(string(eventBytes))
+	log.Printf("event: %s\n", eventBytes)
 
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
