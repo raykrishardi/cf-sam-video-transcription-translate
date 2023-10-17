@@ -4,7 +4,6 @@ import (
 	"cf-sam-video-transcription-translate/api/model/aws/eventbridge"
 	"context"
 	"encoding/json"
-	"go/types"
 	"log"
 	"os"
 
@@ -60,12 +59,14 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	result, err := s3Client.ListObjectsV2(ctx, &s3.ListObjectsV2Input{
 		Bucket: &event.Detail.Bucket.Name,
 	})
-	var contents []types.Object
+
 	if err != nil {
-		log.Printf("Couldn't list objects in bucket %v. Here's why: %v\n", bucketName, err)
+		log.Fatal(err)
 	}
 
-	log.Println(contents)
+	for _, object := range result.Contents {
+		log.Printf("key=%s size=%d", *object.Key, object.Size)
+	}
 
 	// for _, record := range event.Records {
 	// 	bucket := record.S3.Bucket.Name
