@@ -3,3 +3,5 @@
 
 # Exclude - they are rebuilt
 template.yaml
+
+.DS_Store

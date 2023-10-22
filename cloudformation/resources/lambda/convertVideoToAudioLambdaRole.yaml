@@ -21,3 +21,9 @@
                   - "logs:PutLogEvents"
                 Resource:
                   - !Sub "arn:${AWS::Partition}:logs:*:*:*"
+              - Effect: Allow
+                Action:
+                  - "s3:*"
+                Resource:
+                  - !Sub "arn:${AWS::Partition}:s3:::${VideoBucketName}"
+                  - !Sub "arn:${AWS::Partition}:s3:::${AudioBucketName}"
