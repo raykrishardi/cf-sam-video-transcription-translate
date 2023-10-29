@@ -9,5 +9,7 @@
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
           SOURCE_BUCKET_NAME: !Sub "${VideoBucketName}"
+          DESTINATION_BUCKET_NAME: !Sub "${AudioBucketName}"
+          MEDIA_CONVERT_DEFAULT_IAM_ROLE_ARN: !GetAtt MediaConvertDefaultRole.Arn
       Events:
         !Include ./convertVideoToAudioLambdaEvents.yaml

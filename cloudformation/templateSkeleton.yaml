@@ -26,6 +26,8 @@ Resources:
     !Include ./resources/lambda/convertVideoToAudioLambda.yaml
   ConvertVideoToAudioLambdaRole:
     !Include ./resources/lambda/convertVideoToAudioLambdaRole.yaml
+  MediaConvertDefaultRole:
+    !Include ./resources/mediaconvert/mediaConvertDefaultRole.yaml
 
 Outputs:
   ConvertVideoToAudioLambda:

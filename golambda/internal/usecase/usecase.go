@@ -1,15 +1,15 @@
 package usecase
 
 import (
-	s3uc "cf-sam-video-transcription-translate/internal/usecase/s3"
+	mcuc "cf-sam-video-transcription-translate/internal/usecase/mediaconvert"
 )
 
 type UseCase struct {
-	S3UseCase *s3uc.S3UseCase
+	MediaConvertUseCase *mcuc.MediaConvertUseCase
 }
 
-func NewUseCase(s3UseCase *s3uc.S3UseCase) *UseCase {
+func NewUseCase(mediaConvertUseCase *mcuc.MediaConvertUseCase) *UseCase {
 	return &UseCase{
-		S3UseCase: s3UseCase,
+		MediaConvertUseCase: mediaConvertUseCase,
 	}
 }

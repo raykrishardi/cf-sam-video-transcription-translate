@@ -27,3 +27,12 @@
                 Resource:
                   - !Sub "arn:${AWS::Partition}:s3:::${VideoBucketName}"
                   - !Sub "arn:${AWS::Partition}:s3:::${AudioBucketName}"
+              - Effect: Allow
+                Action:
+                  - "mediaconvert:CreateJob"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "iam:PassRole"
+                Resource:
+                  - !GetAtt MediaConvertDefaultRole.Arn
