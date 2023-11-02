@@ -12,7 +12,7 @@ Parameters:
     Type: String
   AudioBucketName:
     Type: String
-  SubtitleBucketName:
+  TranscriptionBucketName:
     Type: String
 
 Resources:
@@ -20,14 +20,18 @@ Resources:
     !Include ./resources/bucket/video.yaml
   AudioBucket:
     !Include ./resources/bucket/audio.yaml
-  SubtitleBucket:
-    !Include ./resources/bucket/subtitle.yaml
+  TranscriptionBucket:
+    !Include ./resources/bucket/transcription.yaml
   ConvertVideoToAudioLambda:
     !Include ./resources/lambda/convertVideoToAudioLambda.yaml
   ConvertVideoToAudioLambdaRole:
     !Include ./resources/lambda/convertVideoToAudioLambdaRole.yaml
   MediaConvertDefaultRole:
     !Include ./resources/mediaconvert/mediaConvertDefaultRole.yaml
+  TranscribeAudioLambda:
+    !Include ./resources/lambda/transcribeAudioLambda.yaml
+  TranscribeAudioLambdaRole:
+    !Include ./resources/lambda/transcribeAudioLambdaRole.yaml
 
 Outputs:
   ConvertVideoToAudioLambda:

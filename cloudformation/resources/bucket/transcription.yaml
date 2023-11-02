@@ -1,6 +1,6 @@
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Ref SubtitleBucketName
+      BucketName: !Ref TranscriptionBucketName
       NotificationConfiguration:
         EventBridgeConfiguration:
           EventBridgeEnabled: true

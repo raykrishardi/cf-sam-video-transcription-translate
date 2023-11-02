@@ -2,7 +2,6 @@ package main
 
 import (
 	"cf-sam-video-transcription-translate/internal/entity/eventbridge"
-	"cf-sam-video-transcription-translate/internal/usecase"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -48,21 +47,21 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// Initialise specific usecases
 	mcUC := mcuc.NewMediaConvertUseCase(ctx, mcRepo)
 
-	// Initialise global usecase
-	uc := usecase.NewUseCase(mcUC)
+	// Initialise global usecase (if necessary)
+	// uc := usecase.NewUseCase(mcUC, nil)
 
 	// Business logic
 	bitRate := int32(192000)
 	convertMP4ToMP3Input := mcuc.ConvertMP4ToMP3Input{
 		Role:     *appConfig.MediaConvertIamRoleArn,
 		InS3Uri:  fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),
-		OutS3Uri: fmt.Sprintf("s3://%s/%s/", *appConfig.AudioBucketName, helper.Split(event.Detail.Object.Key, "/")),
+		OutS3Uri: fmt.Sprintf("s3://%s/%s/", *appConfig.AudioBucketName, helper.Split(event.Detail.Object.Key, "/", true, false)),
 		OutMP3Settings: mcuc.MP3Settings{
 			RateControlMode: "CBR",
 			BitRate:         &bitRate,
 		},
 	}
-	convertMP4ToMP3Output, err := uc.MediaConvertUseCase.ConvertMP4ToMP3(ctx, convertMP4ToMP3Input)
+	convertMP4ToMP3Output, err := mcUC.ConvertMP4ToMP3(ctx, convertMP4ToMP3Input)
 	if err != nil {
 		log.Fatalf("Unable to convert mp4 to mp3 for %s bucket: %v\n", *appConfig.VideoBucketName, err)
 	}

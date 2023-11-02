@@ -6,4 +6,5 @@ type AppConfig struct {
 	AudioBucketName         *string
 	MediaConvertIamRoleArn  *string
 	AWSMediaConvertEndpoint *string
+	TranscriptionBucketName *string
 }
