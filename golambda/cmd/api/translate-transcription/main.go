@@ -4,6 +4,7 @@ import (
 	"cf-sam-video-transcription-translate/internal/entity/eventbridge"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -78,7 +79,15 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 		log.Fatalf("Unable to translate s3 content for key %s and bucket %s: %v\n", s3GetObjectInput.Key, s3GetObjectInput.BucketName, err)
 	}
 
-	log.Printf("translated content: %s\n", translateDocumentOutput.TranslatedDocument.Content)
+	s3PutObjectInput := s3uc.PutObjectInput{
+		BucketName: *s3UC.S3Repo.App.TranslationBucketName,
+		Key:        fmt.Sprintf("%s/%s", *translateDocumentInput.TargetLanguageCode, event.Detail.Object.Key),
+		Body:       translateDocumentOutput.TranslatedDocument.Content,
+	}
+	_, err = s3UC.PutObject(ctx, s3PutObjectInput)
+	if err != nil {
+		log.Fatalf("Unable to upload translated content to key %s and bucket %s: %v\n", s3PutObjectInput.Key, s3PutObjectInput.BucketName, err)
+	}
 
 	resultBytes, err := json.Marshal(translateDocumentOutput)
 	if err != nil {

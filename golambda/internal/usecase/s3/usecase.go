@@ -1,6 +1,7 @@
 package s3
 
 import (
+	"bytes"
 	s3repo "cf-sam-video-transcription-translate/internal/pkg/s3"
 	"context"
 
@@ -33,4 +34,14 @@ func (uc *S3UseCase) GetObject(ctx context.Context, params GetObjectInput) (*s3.
 	}
 
 	return uc.Client.GetObject(ctx, goi)
+}
+
+func (uc *S3UseCase) PutObject(ctx context.Context, params PutObjectInput) (*s3.PutObjectOutput, error) {
+	poi := &s3.PutObjectInput{
+		Bucket: &params.BucketName,
+		Key:    &params.Key,
+		Body:   bytes.NewReader(params.Body),
+	}
+
+	return uc.Client.PutObject(ctx, poi)
 }
