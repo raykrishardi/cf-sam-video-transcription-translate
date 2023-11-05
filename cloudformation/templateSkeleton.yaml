@@ -14,6 +14,8 @@ Parameters:
     Type: String
   TranscriptionBucketName:
     Type: String
+  TranslationBucketName:
+    Type: String
 
 Resources:
   VideoBucket:
@@ -22,6 +24,8 @@ Resources:
     !Include ./resources/bucket/audio.yaml
   TranscriptionBucket:
     !Include ./resources/bucket/transcription.yaml
+  TranslationBucket:
+    !Include ./resources/bucket/translation.yaml
   ConvertVideoToAudioLambda:
     !Include ./resources/lambda/convertVideoToAudioLambda.yaml
   ConvertVideoToAudioLambdaRole:
@@ -32,9 +36,13 @@ Resources:
     !Include ./resources/lambda/transcribeAudioLambda.yaml
   TranscribeAudioLambdaRole:
     !Include ./resources/lambda/transcribeAudioLambdaRole.yaml
+  TranslateTranscriptionLambda:
+    !Include ./resources/lambda/translateTranscriptionLambda.yaml
+  TranslateTranscriptionLambdaRole:
+    !Include ./resources/lambda/translateTranscriptionLambdaRole.yaml
 
 Outputs:
   ConvertVideoToAudioLambda:
     Value: !GetAtt ConvertVideoToAudioLambda.Arn
-  ConvertVideoToAudioLambdaIamRole:
+  ConvertVideoToAudioLambdaRole:
     Value: !GetAtt ConvertVideoToAudioLambdaRole.Arn

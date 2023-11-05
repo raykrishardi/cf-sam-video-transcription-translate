@@ -7,4 +7,5 @@ type AppConfig struct {
 	MediaConvertIamRoleArn  *string
 	AWSMediaConvertEndpoint *string
 	TranscriptionBucketName *string
+	TranslationBucketName   *string
 }

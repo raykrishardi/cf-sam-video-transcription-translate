@@ -1,0 +1,19 @@
+{
+  "detail": {
+      "bucket": {
+          "name": "layadi-transcription-asdf"
+      },
+      "object": {
+          "key": "test.srt",
+          "size": 0
+      },
+      "reason": "PutObject"
+  },
+  "detail-type": "Object Created",
+  "id": "de371218-5d5a-1cda-7c84-2e7f38597baa",
+  "region": "ap-southeast-2",
+  "resources": [
+      "arn:aws:s3:::layadi-transcription-asdf"
+  ],
+  "source": "aws.s3"
+}

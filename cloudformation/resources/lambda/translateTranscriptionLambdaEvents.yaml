@@ -1,0 +1,15 @@
+        S3Event:
+          Type: EventBridgeRule # More info about EventBridge Event Source: https://github.com/aws/serverless-application-model/blob/master/versions/2016-10-31.md#eventbridgerule
+          Properties:
+            Pattern:
+              source:
+                - aws.s3
+              detail-type:
+                - Object Created
+              detail:
+                bucket:
+                  name:
+                  - !Ref TranscriptionBucketName
+                object:
+                  key:
+                  - suffix: ".srt"

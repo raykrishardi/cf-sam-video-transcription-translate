@@ -1,0 +1,6 @@
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref TranslationBucketName
+      NotificationConfiguration:
+        EventBridgeConfiguration:
+          EventBridgeEnabled: true

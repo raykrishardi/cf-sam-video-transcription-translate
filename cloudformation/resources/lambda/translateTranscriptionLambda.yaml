@@ -1,0 +1,14 @@
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: golambda/cmd/api/translate-transcription/
+      Handler: api
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Role: !GetAtt TranslateTranscriptionLambdaRole.Arn
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          SOURCE_BUCKET_NAME: !Sub "${TranscriptionBucketName}"
+          DESTINATION_BUCKET_NAME: !Sub "${TranslationBucketName}"
+      Events:
+        !Include ./translateTranscriptionLambdaEvents.yaml
