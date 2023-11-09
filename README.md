@@ -10,6 +10,7 @@ AWS SAM (Serverless Application Model) that performs the followings:
 
 ### Run on local machine
 ```
+npm i -g cfn-include
 make build
 sam deploy --guided
 ```
