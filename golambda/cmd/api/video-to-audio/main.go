@@ -21,7 +21,7 @@ var (
 	SOURCE_BUCKET_NAME                 = os.Getenv("SOURCE_BUCKET_NAME")
 	DESTINATION_BUCKET_NAME            = os.Getenv("DESTINATION_BUCKET_NAME")
 	MEDIA_CONVERT_DEFAULT_IAM_ROLE_ARN = os.Getenv("MEDIA_CONVERT_DEFAULT_IAM_ROLE_ARN")
-	AWS_MEDIA_CONVERT_ENDPOINT         = fmt.Sprintf("https://wvttkmhib.mediaconvert.%s.amazonaws.com", AWS_REGION)
+	AWS_MEDIA_CONVERT_ENDPOINT         = os.Getenv("AWS_MEDIA_CONVERT_ENDPOINT")
 )
 
 func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
