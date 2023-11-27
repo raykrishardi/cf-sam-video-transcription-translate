@@ -66,6 +66,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 		log.Fatalf("Error reading s3 content for key %s and bucket %s: %v\n", s3GetObjectInput.Key, s3GetObjectInput.BucketName, err)
 	}
 
+	// List of supported language code (https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html)
 	sourceLanguageCode := "auto"
 	targetLanguageCode := "id"
 	translateDocumentInput := tluc.TranslateDocumentInput{
