@@ -31,3 +31,7 @@
                 Action:
                   - "translate:*"
                 Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "comprehend:*"
+                Resource: "*"
