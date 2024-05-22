@@ -13,5 +13,9 @@ AWS SAM (Serverless Application Model) that performs the followings:
 ```
 npm i -g cfn-include
 make build
+
+# Deploy the same app by specifying the vars
+# This will create the specified bucket names
+# Example value for MediaConvertEndpoint=https://mediaconvert.ap-southeast-2.amazonaws.com (reference from https://docs.aws.amazon.com/general/latest/gr/mediaconvert.html)
 sam deploy --guided
 ```
