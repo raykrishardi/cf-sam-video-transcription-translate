@@ -1,13 +1,14 @@
 package transcribe
 
 import (
-	"cf-sam-video-transcription-translate/pkg/helper"
 	trrepo "cf-sam-video-transcription-translate/pkg/repository/transcribe"
 	"context"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/transcribe"
 	"github.com/aws/aws-sdk-go-v2/service/transcribe/types"
+
+	"cf-sam-video-transcription-translate/pkg/utility"
 )
 
 type TranscribeUseCase struct {
@@ -36,7 +37,7 @@ func (uc *TranscribeUseCase) TranscribeMP3ToSRT(ctx context.Context, params Tran
 	// choosing 1 , as this may improve compatibility with other services.
 	defaultSubtitleOutputStartIndex := int32(1)
 
-	jobName := fmt.Sprintf("%s-%s", params.InFileName, helper.RandomString(5))
+	jobName := fmt.Sprintf("%s-%s", params.InFileName, utility.RandomString(5))
 	outputKeyJSON := fmt.Sprintf("%s.json", *params.OutBucketObjectKey)
 	stji := &transcribe.StartTranscriptionJobInput{
 		Media: &types.Media{

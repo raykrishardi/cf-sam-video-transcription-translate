@@ -11,9 +11,10 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 
 	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/helper"
 	mcrepo "cf-sam-video-transcription-translate/pkg/repository/mediaconvert"
 	mcuc "cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
+
+	"cf-sam-video-transcription-translate/pkg/utility"
 )
 
 var (
@@ -55,7 +56,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	convertMP4ToMP3Input := mcuc.ConvertMP4ToMP3Input{
 		Role:     appConfig.MediaConvertIamRoleArn,
 		InS3Uri:  fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),
-		OutS3Uri: fmt.Sprintf("s3://%s/%s/", appConfig.AudioBucketName, helper.Split(event.Detail.Object.Key, "/", true, false)),
+		OutS3Uri: fmt.Sprintf("s3://%s/%s/", appConfig.AudioBucketName, utility.Split(event.Detail.Object.Key, "/", true, false)),
 		OutMP3Settings: mcuc.MP3Settings{
 			RateControlMode: "CBR",
 			BitRate:         &bitRate,

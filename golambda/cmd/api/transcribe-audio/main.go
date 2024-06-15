@@ -11,9 +11,10 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 
 	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/helper"
 	trrepo "cf-sam-video-transcription-translate/pkg/repository/transcribe"
 	truc "cf-sam-video-transcription-translate/pkg/usecase/transcribe"
+
+	"cf-sam-video-transcription-translate/pkg/utility"
 )
 
 var (
@@ -48,9 +49,9 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 
 	// Business logic
 	autoLanguageDetection := true
-	inBucketDirPath := helper.Split(event.Detail.Object.Key, "/", true, false)
-	inBucketFileName := helper.Split(event.Detail.Object.Key, "/", false, true) // file name with extension (e.g. hello.mp3)
-	inBucketFileNameWithoutExtension := helper.GetFileNameOrExtension(inBucketFileName, false)
+	inBucketDirPath := utility.Split(event.Detail.Object.Key, "/", true, false)
+	inBucketFileName := utility.Split(event.Detail.Object.Key, "/", false, true) // file name with extension (e.g. hello.mp3)
+	inBucketFileNameWithoutExtension := utility.GetFileNameOrExtension(inBucketFileName, false)
 	outBucketObjectKey := fmt.Sprintf("%s/%s", inBucketDirPath, inBucketFileNameWithoutExtension)
 	transcribeMP3ToSRTInput := truc.TranscribeMP3ToSRTInput{
 		OutBucketName:      appConfig.TranscriptionBucketName,
