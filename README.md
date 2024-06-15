@@ -1,4 +1,4 @@
-# cf-sam-video-transcription-translate
+# cf-sam-video-transcribe-translate
 AWS SAM (Serverless Application Model) that performs the followings:
 1. Convert mp4 (video s3 bucket) to mp3 file (audio s3 bucket) using AWS MediaConvert
 2. Transcribe mp3 file (audio s3 bucket) to subtitle (SRT) file (transcription s3 bucket) using AWS Transcribe
