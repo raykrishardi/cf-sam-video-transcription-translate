@@ -14,5 +14,6 @@ func (repo *S3Repository) GetS3Client(ctx context.Context) (*s3.Client, error) {
 	}
 
 	s3Client := s3.NewFromConfig(cfg)
+
 	return s3Client, nil
 }

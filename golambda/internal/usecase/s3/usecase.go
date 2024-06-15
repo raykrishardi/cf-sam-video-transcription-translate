@@ -1,6 +1,7 @@
 package s3
 
 import (
+	"bytes"
 	s3repo "cf-sam-video-transcription-translate/internal/pkg/s3"
 	"context"
 
@@ -9,26 +10,38 @@ import (
 
 type S3UseCase struct {
 	S3Repo *s3repo.S3Repository
+	Client *s3.Client
 }
 
-func NewS3UseCase(s3Repo *s3repo.S3Repository) *S3UseCase {
-	return &S3UseCase{
-		S3Repo: s3Repo,
+func NewS3UseCase(ctx context.Context, s3Repo *s3repo.S3Repository) *S3UseCase {
+	uc := &S3UseCase{}
+
+	client, err := s3Repo.GetS3Client(ctx)
+	if err != nil {
+		return uc
 	}
+
+	uc.S3Repo = s3Repo
+	uc.Client = client
+
+	return uc
 }
 
-func (uc *S3UseCase) ListBucket(ctx context.Context, name string) (*s3.ListObjectsV2Output, error) {
-	client, err := uc.S3Repo.GetS3Client(ctx)
-	if err != nil {
-		return nil, err
+func (uc *S3UseCase) GetObject(ctx context.Context, params GetObjectInput) (*s3.GetObjectOutput, error) {
+	goi := &s3.GetObjectInput{
+		Bucket: &params.BucketName,
+		Key:    &params.Key,
 	}
 
-	result, err := client.ListObjectsV2(ctx, &s3.ListObjectsV2Input{
-		Bucket: &name,
-	})
-	if err != nil {
-		return nil, err
+	return uc.Client.GetObject(ctx, goi)
+}
+
+func (uc *S3UseCase) PutObject(ctx context.Context, params PutObjectInput) (*s3.PutObjectOutput, error) {
+	poi := &s3.PutObjectInput{
+		Bucket: &params.BucketName,
+		Key:    &params.Key,
+		Body:   bytes.NewReader(params.Body),
 	}
 
-	return result, nil
+	return uc.Client.PutObject(ctx, poi)
 }

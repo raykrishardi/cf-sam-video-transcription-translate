@@ -10,7 +10,7 @@
       Path: "/"
       Policies:
         - PolicyName:
-            Fn::Sub: ${AWS::StackName}-ConvertVideoToAudioLambdaPolicy
+            Fn::Sub: ${AWS::StackName}-TranscribeAudioLambdaPolicy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -25,14 +25,9 @@
                 Action:
                   - "s3:*"
                 Resource:
-                  - !Sub "arn:${AWS::Partition}:s3:::${VideoBucketName}"
-                  - !Sub "arn:${AWS::Partition}:s3:::${AudioBucketName}"
+                  - !Sub "arn:${AWS::Partition}:s3:::${AudioBucketName}/*"
+                  - !Sub "arn:${AWS::Partition}:s3:::${TranscriptionBucketName}/*"
               - Effect: Allow
                 Action:
-                  - "mediaconvert:CreateJob"
+                  - "transcribe:*"
                 Resource: "*"
-              - Effect: Allow
-                Action:
-                  - "iam:PassRole"
-                Resource:
-                  - !GetAtt MediaConvertDefaultRole.Arn

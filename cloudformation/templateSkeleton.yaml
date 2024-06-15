@@ -12,7 +12,9 @@ Parameters:
     Type: String
   AudioBucketName:
     Type: String
-  SubtitleBucketName:
+  TranscriptionBucketName:
+    Type: String
+  TranslationBucketName:
     Type: String
 
 Resources:
@@ -20,15 +22,27 @@ Resources:
     !Include ./resources/bucket/video.yaml
   AudioBucket:
     !Include ./resources/bucket/audio.yaml
-  SubtitleBucket:
-    !Include ./resources/bucket/subtitle.yaml
+  TranscriptionBucket:
+    !Include ./resources/bucket/transcription.yaml
+  TranslationBucket:
+    !Include ./resources/bucket/translation.yaml
   ConvertVideoToAudioLambda:
     !Include ./resources/lambda/convertVideoToAudioLambda.yaml
   ConvertVideoToAudioLambdaRole:
     !Include ./resources/lambda/convertVideoToAudioLambdaRole.yaml
+  MediaConvertDefaultRole:
+    !Include ./resources/mediaconvert/mediaConvertDefaultRole.yaml
+  TranscribeAudioLambda:
+    !Include ./resources/lambda/transcribeAudioLambda.yaml
+  TranscribeAudioLambdaRole:
+    !Include ./resources/lambda/transcribeAudioLambdaRole.yaml
+  TranslateTranscriptionLambda:
+    !Include ./resources/lambda/translateTranscriptionLambda.yaml
+  TranslateTranscriptionLambdaRole:
+    !Include ./resources/lambda/translateTranscriptionLambdaRole.yaml
 
 Outputs:
   ConvertVideoToAudioLambda:
     Value: !GetAtt ConvertVideoToAudioLambda.Arn
-  ConvertVideoToAudioLambdaIamRole:
+  ConvertVideoToAudioLambdaRole:
     Value: !GetAtt ConvertVideoToAudioLambdaRole.Arn

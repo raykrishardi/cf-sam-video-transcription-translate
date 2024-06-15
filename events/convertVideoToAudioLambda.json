@@ -1,0 +1,19 @@
+{
+  "detail": {
+      "bucket": {
+          "name": "layadi-video-asdf"
+      },
+      "object": {
+          "key": "test.mp4",
+          "size": 0
+      },
+      "reason": "PutObject"
+  },
+  "detail-type": "Object Created",
+  "id": "de371218-5d5a-1cda-7c84-2e7f38597baa",
+  "region": "ap-southeast-2",
+  "resources": [
+      "arn:aws:s3:::layadi-video-asdf"
+  ],
+  "source": "aws.s3"
+}
