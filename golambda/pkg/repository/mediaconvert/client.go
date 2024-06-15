@@ -14,7 +14,7 @@ func (repo *MediaConvertRepository) GetMediaConvertClient(ctx context.Context) (
 	}
 
 	mediaConvertClient := mediaconvert.NewFromConfig(cfg, func(o *mediaconvert.Options) {
-		o.BaseEndpoint = repo.App.AWSMediaConvertEndpoint
+		o.BaseEndpoint = &repo.App.AWSMediaConvertEndpoint
 	})
 
 	return mediaConvertClient, nil

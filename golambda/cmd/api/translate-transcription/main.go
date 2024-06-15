@@ -34,8 +34,8 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// Initialise app config
 	appConfig := &config.AppConfig{
 		AWSRegion:               AWS_REGION,
-		TranscriptionBucketName: &SOURCE_BUCKET_NAME,
-		TranslationBucketName:   &DESTINATION_BUCKET_NAME,
+		TranscriptionBucketName: SOURCE_BUCKET_NAME,
+		TranslationBucketName:   DESTINATION_BUCKET_NAME,
 	}
 
 	// Initialise repositories
@@ -81,7 +81,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	}
 
 	s3PutObjectInput := s3uc.PutObjectInput{
-		BucketName: *s3UC.S3Repo.App.TranslationBucketName,
+		BucketName: s3UC.S3Repo.App.TranslationBucketName,
 		Key:        fmt.Sprintf("%s/%s", *translateDocumentInput.TargetLanguageCode, event.Detail.Object.Key),
 		Body:       translateDocumentOutput.TranslatedDocument.Content,
 	}

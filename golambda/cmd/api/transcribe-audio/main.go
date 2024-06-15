@@ -32,8 +32,8 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// Initialise app config
 	appConfig := &config.AppConfig{
 		AWSRegion:               AWS_REGION,
-		AudioBucketName:         &SOURCE_BUCKET_NAME,
-		TranscriptionBucketName: &DESTINATION_BUCKET_NAME,
+		AudioBucketName:         SOURCE_BUCKET_NAME,
+		TranscriptionBucketName: DESTINATION_BUCKET_NAME,
 	}
 
 	// Initialise repositories
@@ -53,7 +53,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	inBucketFileNameWithoutExtension := helper.GetFileNameOrExtension(inBucketFileName, false)
 	outBucketObjectKey := fmt.Sprintf("%s/%s", inBucketDirPath, inBucketFileNameWithoutExtension)
 	transcribeMP3ToSRTInput := truc.TranscribeMP3ToSRTInput{
-		OutBucketName:      *appConfig.TranscriptionBucketName,
+		OutBucketName:      appConfig.TranscriptionBucketName,
 		OutBucketObjectKey: &outBucketObjectKey,
 		InS3Uri:            fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),
 		InFileName:         inBucketFileName,
@@ -61,7 +61,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	}
 	transcribeMP3ToSRTOutput, err := trUC.TranscribeMP3ToSRT(ctx, transcribeMP3ToSRTInput)
 	if err != nil {
-		log.Fatalf("Unable to transcribe mp3 from %s bucket: %v\n", *appConfig.AudioBucketName, err)
+		log.Fatalf("Unable to transcribe mp3 from %s bucket: %v\n", appConfig.AudioBucketName, err)
 	}
 
 	resultBytes, err := json.Marshal(transcribeMP3ToSRTOutput)

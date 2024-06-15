@@ -34,10 +34,10 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// Initialise app config
 	appConfig := &config.AppConfig{
 		AWSRegion:               AWS_REGION,
-		VideoBucketName:         &SOURCE_BUCKET_NAME,
-		AudioBucketName:         &DESTINATION_BUCKET_NAME,
-		MediaConvertIamRoleArn:  &MEDIA_CONVERT_DEFAULT_IAM_ROLE_ARN,
-		AWSMediaConvertEndpoint: &AWS_MEDIA_CONVERT_ENDPOINT,
+		VideoBucketName:         SOURCE_BUCKET_NAME,
+		AudioBucketName:         DESTINATION_BUCKET_NAME,
+		MediaConvertIamRoleArn:  MEDIA_CONVERT_DEFAULT_IAM_ROLE_ARN,
+		AWSMediaConvertEndpoint: AWS_MEDIA_CONVERT_ENDPOINT,
 	}
 
 	// Initialise repositories
@@ -53,9 +53,9 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// Business logic
 	bitRate := int32(192000)
 	convertMP4ToMP3Input := mcuc.ConvertMP4ToMP3Input{
-		Role:     *appConfig.MediaConvertIamRoleArn,
+		Role:     appConfig.MediaConvertIamRoleArn,
 		InS3Uri:  fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),
-		OutS3Uri: fmt.Sprintf("s3://%s/%s/", *appConfig.AudioBucketName, helper.Split(event.Detail.Object.Key, "/", true, false)),
+		OutS3Uri: fmt.Sprintf("s3://%s/%s/", appConfig.AudioBucketName, helper.Split(event.Detail.Object.Key, "/", true, false)),
 		OutMP3Settings: mcuc.MP3Settings{
 			RateControlMode: "CBR",
 			BitRate:         &bitRate,
@@ -63,7 +63,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	}
 	convertMP4ToMP3Output, err := mcUC.ConvertMP4ToMP3(ctx, convertMP4ToMP3Input)
 	if err != nil {
-		log.Fatalf("Unable to convert mp4 to mp3 for %s bucket: %v\n", *appConfig.VideoBucketName, err)
+		log.Fatalf("Unable to convert mp4 to mp3 for %s bucket: %v\n", appConfig.VideoBucketName, err)
 	}
 
 	resultBytes, err := json.Marshal(convertMP4ToMP3Output)
