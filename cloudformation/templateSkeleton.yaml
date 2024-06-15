@@ -16,6 +16,9 @@ Parameters:
     Type: String
   TranslationBucketName:
     Type: String
+  TranslationTargetLanguageCode:
+    Type: String
+    Description: "List of supported language code: https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html"
 
 Resources:
   VideoBucket:

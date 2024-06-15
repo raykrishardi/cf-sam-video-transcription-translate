@@ -12,5 +12,6 @@
         Variables:
           SOURCE_BUCKET_NAME: !Sub "${TranscriptionBucketName}"
           DESTINATION_BUCKET_NAME: !Sub "${TranslationBucketName}"
+          TRANSLATION_TARGET_LANGUAGE_CODE: !Ref TranslationTargetLanguageCode
       Events:
         !Include ./translateTranscriptionLambdaEvents.yaml

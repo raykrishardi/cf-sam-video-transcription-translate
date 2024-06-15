@@ -20,9 +20,10 @@ import (
 )
 
 var (
-	AWS_REGION              = os.Getenv("AWS_REGION")
-	SOURCE_BUCKET_NAME      = os.Getenv("SOURCE_BUCKET_NAME")
-	DESTINATION_BUCKET_NAME = os.Getenv("DESTINATION_BUCKET_NAME")
+	AWS_REGION                       = os.Getenv("AWS_REGION")
+	SOURCE_BUCKET_NAME               = os.Getenv("SOURCE_BUCKET_NAME")
+	DESTINATION_BUCKET_NAME          = os.Getenv("DESTINATION_BUCKET_NAME")
+	TRANSLATION_TARGET_LANGUAGE_CODE = os.Getenv("TRANSLATION_TARGET_LANGUAGE_CODE")
 )
 
 func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, error) {
@@ -69,7 +70,7 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 
 	// List of supported language code (https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html)
 	sourceLanguageCode := "auto"
-	targetLanguageCode := "id"
+	targetLanguageCode := TRANSLATION_TARGET_LANGUAGE_CODE
 	translateDocumentInput := entity.TranslateDocumentInput{
 		Content:            s3ObjectBytes,
 		ContentType:        "text/plain",
