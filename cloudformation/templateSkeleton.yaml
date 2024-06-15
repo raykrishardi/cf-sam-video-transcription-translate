@@ -16,9 +16,6 @@ Parameters:
     Type: String
   TranslationBucketName:
     Type: String
-  MediaConvertEndpoint:
-    Type: String
-    Description: MediaConvert endpoint depends on the region (aws mediaconvert describe-endpoints --region REGION)
 
 Resources:
   VideoBucket:
