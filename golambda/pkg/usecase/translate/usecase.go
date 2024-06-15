@@ -1,7 +1,7 @@
 package translate
 
 import (
-	tlrepo "cf-sam-video-transcription-translate/internal/pkg/translate"
+	tlrepo "cf-sam-video-transcription-translate/pkg/repository/translate"
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/translate"

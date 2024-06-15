@@ -1,7 +1,7 @@
 package mediaconvert
 
 import (
-	mcrepo "cf-sam-video-transcription-translate/internal/pkg/mediaconvert"
+	mcrepo "cf-sam-video-transcription-translate/pkg/repository/mediaconvert"
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/mediaconvert"

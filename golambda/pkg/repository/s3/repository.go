@@ -1,6 +1,6 @@
 package s3
 
-import "cf-sam-video-transcription-translate/internal/pkg/config"
+import "cf-sam-video-transcription-translate/config"
 
 var Repo *S3Repository
 
