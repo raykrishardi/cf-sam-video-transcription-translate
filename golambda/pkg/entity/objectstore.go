@@ -1,4 +1,4 @@
-package s3
+package entity
 
 type GetObjectInput struct {
 	BucketName string

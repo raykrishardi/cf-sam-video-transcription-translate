@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cf-sam-video-transcription-translate/pkg/entity/eventbridge"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -14,6 +13,7 @@ import (
 	mcrepo "cf-sam-video-transcription-translate/pkg/repository/mediaconvert"
 	mcuc "cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
 
+	"cf-sam-video-transcription-translate/pkg/entity"
 	"cf-sam-video-transcription-translate/pkg/utility"
 )
 
@@ -25,7 +25,7 @@ var (
 	AWS_MEDIA_CONVERT_ENDPOINT         = os.Getenv("AWS_MEDIA_CONVERT_ENDPOINT")
 )
 
-func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
+func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, error) {
 	eventBytes, err := json.Marshal(event)
 	if err != nil {
 		log.Fatalf("Error serializing event to JSON:%v\n", err)
@@ -53,11 +53,11 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 
 	// Business logic
 	bitRate := int32(192000)
-	convertMP4ToMP3Input := mcuc.ConvertMP4ToMP3Input{
+	convertMP4ToMP3Input := entity.ConvertMP4ToMP3Input{
 		Role:     appConfig.MediaConvertIamRoleArn,
 		InS3Uri:  fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),
 		OutS3Uri: fmt.Sprintf("s3://%s/%s/", appConfig.AudioBucketName, utility.Split(event.Detail.Object.Key, "/", true, false)),
-		OutMP3Settings: mcuc.MP3Settings{
+		OutMP3Settings: entity.MP3Settings{
 			RateControlMode: "CBR",
 			BitRate:         &bitRate,
 		},

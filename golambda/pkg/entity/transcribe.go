@@ -1,4 +1,4 @@
-package transcribe
+package entity
 
 type TranscribeMP3ToSRTInput struct {
 	OutBucketName      string

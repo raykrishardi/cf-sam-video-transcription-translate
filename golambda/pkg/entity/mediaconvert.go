@@ -1,4 +1,4 @@
-package mediaconvert
+package entity
 
 type ConvertMP4ToMP3Input struct {
 	Role           string

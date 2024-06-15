@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cf-sam-video-transcription-translate/pkg/entity/eventbridge"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,6 +15,8 @@ import (
 	tlrepo "cf-sam-video-transcription-translate/pkg/repository/translate"
 	s3uc "cf-sam-video-transcription-translate/pkg/usecase/s3"
 	tluc "cf-sam-video-transcription-translate/pkg/usecase/translate"
+
+	"cf-sam-video-transcription-translate/pkg/entity"
 )
 
 var (
@@ -24,7 +25,7 @@ var (
 	DESTINATION_BUCKET_NAME = os.Getenv("DESTINATION_BUCKET_NAME")
 )
 
-func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
+func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, error) {
 	eventBytes, err := json.Marshal(event)
 	if err != nil {
 		log.Fatalf("Error serializing event to JSON:%v\n", err)
@@ -52,7 +53,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// uc := usecase.NewUseCase(nil, nil, tlUC, s3UC)
 
 	// Business logic
-	s3GetObjectInput := s3uc.GetObjectInput{
+	s3GetObjectInput := entity.GetObjectInput{
 		BucketName: event.Detail.Bucket.Name,
 		Key:        event.Detail.Object.Key,
 	}
@@ -69,7 +70,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// List of supported language code (https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html)
 	sourceLanguageCode := "auto"
 	targetLanguageCode := "id"
-	translateDocumentInput := tluc.TranslateDocumentInput{
+	translateDocumentInput := entity.TranslateDocumentInput{
 		Content:            s3ObjectBytes,
 		ContentType:        "text/plain",
 		SourceLanguageCode: &sourceLanguageCode,
@@ -80,7 +81,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 		log.Fatalf("Unable to translate s3 content for key %s and bucket %s: %v\n", s3GetObjectInput.Key, s3GetObjectInput.BucketName, err)
 	}
 
-	s3PutObjectInput := s3uc.PutObjectInput{
+	s3PutObjectInput := entity.PutObjectInput{
 		BucketName: s3UC.S3Repo.App.TranslationBucketName,
 		Key:        fmt.Sprintf("%s/%s", *translateDocumentInput.TargetLanguageCode, event.Detail.Object.Key),
 		Body:       translateDocumentOutput.TranslatedDocument.Content,

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cf-sam-video-transcription-translate/pkg/entity/eventbridge"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -14,6 +13,7 @@ import (
 	trrepo "cf-sam-video-transcription-translate/pkg/repository/transcribe"
 	truc "cf-sam-video-transcription-translate/pkg/usecase/transcribe"
 
+	"cf-sam-video-transcription-translate/pkg/entity"
 	"cf-sam-video-transcription-translate/pkg/utility"
 )
 
@@ -23,7 +23,7 @@ var (
 	DESTINATION_BUCKET_NAME = os.Getenv("DESTINATION_BUCKET_NAME")
 )
 
-func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
+func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, error) {
 	eventBytes, err := json.Marshal(event)
 	if err != nil {
 		log.Fatalf("Error serializing event to JSON:%v\n", err)
@@ -53,7 +53,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	inBucketFileName := utility.Split(event.Detail.Object.Key, "/", false, true) // file name with extension (e.g. hello.mp3)
 	inBucketFileNameWithoutExtension := utility.GetFileNameOrExtension(inBucketFileName, false)
 	outBucketObjectKey := fmt.Sprintf("%s/%s", inBucketDirPath, inBucketFileNameWithoutExtension)
-	transcribeMP3ToSRTInput := truc.TranscribeMP3ToSRTInput{
+	transcribeMP3ToSRTInput := entity.TranscribeMP3ToSRTInput{
 		OutBucketName:      appConfig.TranscriptionBucketName,
 		OutBucketObjectKey: &outBucketObjectKey,
 		InS3Uri:            fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),

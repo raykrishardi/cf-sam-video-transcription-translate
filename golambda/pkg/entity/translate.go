@@ -1,4 +1,4 @@
-package translate
+package entity
 
 type TranslateDocumentInput struct {
 	Content            []byte

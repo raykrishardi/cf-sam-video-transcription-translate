@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/transcribe"
 	"github.com/aws/aws-sdk-go-v2/service/transcribe/types"
 
+	"cf-sam-video-transcription-translate/pkg/entity"
 	"cf-sam-video-transcription-translate/pkg/utility"
 )
 
@@ -30,7 +31,7 @@ func NewTranscribeUseCase(ctx context.Context, trRepo *trrepo.TranscribeReposito
 	return uc
 }
 
-func (uc *TranscribeUseCase) TranscribeMP3ToSRT(ctx context.Context, params TranscribeMP3ToSRTInput) (*transcribe.StartTranscriptionJobOutput, error) {
+func (uc *TranscribeUseCase) TranscribeMP3ToSRT(ctx context.Context, params entity.TranscribeMP3ToSRTInput) (*transcribe.StartTranscriptionJobOutput, error) {
 	// Specify the starting value that is assigned to the first subtitle segment. The
 	// default start index for Amazon Transcribe is 0 , which differs from the more
 	// widely used standard of 1 . If you're uncertain which value to use, we recommend
