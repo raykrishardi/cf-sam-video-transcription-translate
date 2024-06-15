@@ -6,6 +6,8 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+
+	"cf-sam-video-transcription-translate/pkg/entity"
 )
 
 type S3UseCase struct {
@@ -27,7 +29,7 @@ func NewS3UseCase(ctx context.Context, s3Repo *s3repo.S3Repository) *S3UseCase {
 	return uc
 }
 
-func (uc *S3UseCase) GetObject(ctx context.Context, params GetObjectInput) (*s3.GetObjectOutput, error) {
+func (uc *S3UseCase) GetObject(ctx context.Context, params entity.GetObjectInput) (*s3.GetObjectOutput, error) {
 	goi := &s3.GetObjectInput{
 		Bucket: &params.BucketName,
 		Key:    &params.Key,
@@ -36,7 +38,7 @@ func (uc *S3UseCase) GetObject(ctx context.Context, params GetObjectInput) (*s3.
 	return uc.Client.GetObject(ctx, goi)
 }
 
-func (uc *S3UseCase) PutObject(ctx context.Context, params PutObjectInput) (*s3.PutObjectOutput, error) {
+func (uc *S3UseCase) PutObject(ctx context.Context, params entity.PutObjectInput) (*s3.PutObjectOutput, error) {
 	poi := &s3.PutObjectInput{
 		Bucket: &params.BucketName,
 		Key:    &params.Key,

@@ -6,6 +6,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/translate"
 	"github.com/aws/aws-sdk-go-v2/service/translate/types"
+
+	"cf-sam-video-transcription-translate/pkg/entity"
 )
 
 type TranslateUseCase struct {
@@ -27,7 +29,7 @@ func NewTranslateUseCase(ctx context.Context, tlRepo *tlrepo.TranslateTranscript
 	return uc
 }
 
-func (uc *TranslateUseCase) TranslateDocument(ctx context.Context, params TranslateDocumentInput) (*translate.TranslateDocumentOutput, error) {
+func (uc *TranslateUseCase) TranslateDocument(ctx context.Context, params entity.TranslateDocumentInput) (*translate.TranslateDocumentOutput, error) {
 	tdi := &translate.TranslateDocumentInput{
 		Document: &types.Document{
 			Content:     params.Content,

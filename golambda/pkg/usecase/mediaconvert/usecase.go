@@ -6,6 +6,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/mediaconvert"
 	"github.com/aws/aws-sdk-go-v2/service/mediaconvert/types"
+
+	"cf-sam-video-transcription-translate/pkg/entity"
 )
 
 type MediaConvertUseCase struct {
@@ -27,7 +29,7 @@ func NewMediaConvertUseCase(ctx context.Context, mcRepo *mcrepo.MediaConvertRepo
 	return uc
 }
 
-func (uc *MediaConvertUseCase) ConvertMP4ToMP3(ctx context.Context, params ConvertMP4ToMP3Input) (*mediaconvert.CreateJobOutput, error) {
+func (uc *MediaConvertUseCase) ConvertMP4ToMP3(ctx context.Context, params entity.ConvertMP4ToMP3Input) (*mediaconvert.CreateJobOutput, error) {
 	inAudioSelectors := map[string]types.AudioSelector{
 		"Audio Selector 1": {
 			DefaultSelection: types.AudioDefaultSelectionDefault,

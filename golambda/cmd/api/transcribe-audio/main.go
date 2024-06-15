@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cf-sam-video-transcription-translate/pkg/entity/eventbridge"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -11,9 +10,11 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 
 	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/helper"
 	trrepo "cf-sam-video-transcription-translate/pkg/repository/transcribe"
 	truc "cf-sam-video-transcription-translate/pkg/usecase/transcribe"
+
+	"cf-sam-video-transcription-translate/pkg/entity"
+	"cf-sam-video-transcription-translate/pkg/utility"
 )
 
 var (
@@ -22,7 +23,7 @@ var (
 	DESTINATION_BUCKET_NAME = os.Getenv("DESTINATION_BUCKET_NAME")
 )
 
-func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
+func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, error) {
 	eventBytes, err := json.Marshal(event)
 	if err != nil {
 		log.Fatalf("Error serializing event to JSON:%v\n", err)
@@ -32,8 +33,8 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// Initialise app config
 	appConfig := &config.AppConfig{
 		AWSRegion:               AWS_REGION,
-		AudioBucketName:         &SOURCE_BUCKET_NAME,
-		TranscriptionBucketName: &DESTINATION_BUCKET_NAME,
+		AudioBucketName:         SOURCE_BUCKET_NAME,
+		TranscriptionBucketName: DESTINATION_BUCKET_NAME,
 	}
 
 	// Initialise repositories
@@ -48,12 +49,12 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 
 	// Business logic
 	autoLanguageDetection := true
-	inBucketDirPath := helper.Split(event.Detail.Object.Key, "/", true, false)
-	inBucketFileName := helper.Split(event.Detail.Object.Key, "/", false, true) // file name with extension (e.g. hello.mp3)
-	inBucketFileNameWithoutExtension := helper.GetFileNameOrExtension(inBucketFileName, false)
+	inBucketDirPath := utility.Split(event.Detail.Object.Key, "/", true, false)
+	inBucketFileName := utility.Split(event.Detail.Object.Key, "/", false, true) // file name with extension (e.g. hello.mp3)
+	inBucketFileNameWithoutExtension := utility.GetFileNameOrExtension(inBucketFileName, false)
 	outBucketObjectKey := fmt.Sprintf("%s/%s", inBucketDirPath, inBucketFileNameWithoutExtension)
-	transcribeMP3ToSRTInput := truc.TranscribeMP3ToSRTInput{
-		OutBucketName:      *appConfig.TranscriptionBucketName,
+	transcribeMP3ToSRTInput := entity.TranscribeMP3ToSRTInput{
+		OutBucketName:      appConfig.TranscriptionBucketName,
 		OutBucketObjectKey: &outBucketObjectKey,
 		InS3Uri:            fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),
 		InFileName:         inBucketFileName,
@@ -61,7 +62,7 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	}
 	transcribeMP3ToSRTOutput, err := trUC.TranscribeMP3ToSRT(ctx, transcribeMP3ToSRTInput)
 	if err != nil {
-		log.Fatalf("Unable to transcribe mp3 from %s bucket: %v\n", *appConfig.AudioBucketName, err)
+		log.Fatalf("Unable to transcribe mp3 from %s bucket: %v\n", appConfig.AudioBucketName, err)
 	}
 
 	resultBytes, err := json.Marshal(transcribeMP3ToSRTOutput)

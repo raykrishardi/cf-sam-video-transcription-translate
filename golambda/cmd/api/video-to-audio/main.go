@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cf-sam-video-transcription-translate/pkg/entity/eventbridge"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -11,9 +10,11 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 
 	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/helper"
 	mcrepo "cf-sam-video-transcription-translate/pkg/repository/mediaconvert"
 	mcuc "cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
+
+	"cf-sam-video-transcription-translate/pkg/entity"
+	"cf-sam-video-transcription-translate/pkg/utility"
 )
 
 var (
@@ -24,7 +25,7 @@ var (
 	AWS_MEDIA_CONVERT_ENDPOINT         = os.Getenv("AWS_MEDIA_CONVERT_ENDPOINT")
 )
 
-func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
+func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, error) {
 	eventBytes, err := json.Marshal(event)
 	if err != nil {
 		log.Fatalf("Error serializing event to JSON:%v\n", err)
@@ -34,10 +35,10 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 	// Initialise app config
 	appConfig := &config.AppConfig{
 		AWSRegion:               AWS_REGION,
-		VideoBucketName:         &SOURCE_BUCKET_NAME,
-		AudioBucketName:         &DESTINATION_BUCKET_NAME,
-		MediaConvertIamRoleArn:  &MEDIA_CONVERT_DEFAULT_IAM_ROLE_ARN,
-		AWSMediaConvertEndpoint: &AWS_MEDIA_CONVERT_ENDPOINT,
+		VideoBucketName:         SOURCE_BUCKET_NAME,
+		AudioBucketName:         DESTINATION_BUCKET_NAME,
+		MediaConvertIamRoleArn:  MEDIA_CONVERT_DEFAULT_IAM_ROLE_ARN,
+		AWSMediaConvertEndpoint: AWS_MEDIA_CONVERT_ENDPOINT,
 	}
 
 	// Initialise repositories
@@ -52,18 +53,18 @@ func handler(ctx context.Context, event eventbridge.S3) ([]byte, error) {
 
 	// Business logic
 	bitRate := int32(192000)
-	convertMP4ToMP3Input := mcuc.ConvertMP4ToMP3Input{
-		Role:     *appConfig.MediaConvertIamRoleArn,
+	convertMP4ToMP3Input := entity.ConvertMP4ToMP3Input{
+		Role:     appConfig.MediaConvertIamRoleArn,
 		InS3Uri:  fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),
-		OutS3Uri: fmt.Sprintf("s3://%s/%s/", *appConfig.AudioBucketName, helper.Split(event.Detail.Object.Key, "/", true, false)),
-		OutMP3Settings: mcuc.MP3Settings{
+		OutS3Uri: fmt.Sprintf("s3://%s/%s/", appConfig.AudioBucketName, utility.Split(event.Detail.Object.Key, "/", true, false)),
+		OutMP3Settings: entity.MP3Settings{
 			RateControlMode: "CBR",
 			BitRate:         &bitRate,
 		},
 	}
 	convertMP4ToMP3Output, err := mcUC.ConvertMP4ToMP3(ctx, convertMP4ToMP3Input)
 	if err != nil {
-		log.Fatalf("Unable to convert mp4 to mp3 for %s bucket: %v\n", *appConfig.VideoBucketName, err)
+		log.Fatalf("Unable to convert mp4 to mp3 for %s bucket: %v\n", appConfig.VideoBucketName, err)
 	}
 
 	resultBytes, err := json.Marshal(convertMP4ToMP3Output)
