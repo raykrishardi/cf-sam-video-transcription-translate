@@ -2,7 +2,7 @@ package s3
 
 import (
 	"bytes"
-	s3repo "cf-sam-video-transcription-translate/internal/pkg/s3"
+	s3repo "cf-sam-video-transcription-translate/pkg/repository/s3"
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"

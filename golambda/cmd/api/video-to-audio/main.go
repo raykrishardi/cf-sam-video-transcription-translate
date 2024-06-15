@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cf-sam-video-transcription-translate/internal/entity/eventbridge"
+	"cf-sam-video-transcription-translate/pkg/entity/eventbridge"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -10,10 +10,10 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 
-	"cf-sam-video-transcription-translate/internal/pkg/config"
-	"cf-sam-video-transcription-translate/internal/pkg/helper"
-	mcrepo "cf-sam-video-transcription-translate/internal/pkg/mediaconvert"
-	mcuc "cf-sam-video-transcription-translate/internal/usecase/mediaconvert"
+	"cf-sam-video-transcription-translate/config"
+	"cf-sam-video-transcription-translate/pkg/helper"
+	mcrepo "cf-sam-video-transcription-translate/pkg/repository/mediaconvert"
+	mcuc "cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
 )
 
 var (

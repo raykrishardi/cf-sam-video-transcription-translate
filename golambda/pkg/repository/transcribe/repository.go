@@ -1,6 +1,6 @@
 package transcribe
 
-import "cf-sam-video-transcription-translate/internal/pkg/config"
+import "cf-sam-video-transcription-translate/config"
 
 var Repo *TranscribeRepository
 

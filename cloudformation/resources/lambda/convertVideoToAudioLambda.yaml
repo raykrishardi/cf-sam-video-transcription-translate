@@ -13,6 +13,6 @@
           SOURCE_BUCKET_NAME: !Sub "${VideoBucketName}"
           DESTINATION_BUCKET_NAME: !Sub "${AudioBucketName}"
           MEDIA_CONVERT_DEFAULT_IAM_ROLE_ARN: !GetAtt MediaConvertDefaultRole.Arn
-          AWS_MEDIA_CONVERT_ENDPOINT: !Sub "mediaconvert.${AWS::Region}.amazonaws.com"
+          AWS_MEDIA_CONVERT_ENDPOINT: !Sub "https://mediaconvert.${AWS::Region}.amazonaws.com"
       Events:
         !Include ./convertVideoToAudioLambdaEvents.yaml

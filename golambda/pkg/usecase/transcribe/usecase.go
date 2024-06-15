@@ -1,8 +1,8 @@
 package transcribe
 
 import (
-	"cf-sam-video-transcription-translate/internal/pkg/helper"
-	trrepo "cf-sam-video-transcription-translate/internal/pkg/transcribe"
+	"cf-sam-video-transcription-translate/pkg/helper"
+	trrepo "cf-sam-video-transcription-translate/pkg/repository/transcribe"
 	"context"
 	"fmt"
 

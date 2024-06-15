@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cf-sam-video-transcription-translate/internal/entity/eventbridge"
+	"cf-sam-video-transcription-translate/pkg/entity/eventbridge"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -11,11 +11,11 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 
-	"cf-sam-video-transcription-translate/internal/pkg/config"
-	s3repo "cf-sam-video-transcription-translate/internal/pkg/s3"
-	tlrepo "cf-sam-video-transcription-translate/internal/pkg/translate"
-	s3uc "cf-sam-video-transcription-translate/internal/usecase/s3"
-	tluc "cf-sam-video-transcription-translate/internal/usecase/translate"
+	"cf-sam-video-transcription-translate/config"
+	s3repo "cf-sam-video-transcription-translate/pkg/repository/s3"
+	tlrepo "cf-sam-video-transcription-translate/pkg/repository/translate"
+	s3uc "cf-sam-video-transcription-translate/pkg/usecase/s3"
+	tluc "cf-sam-video-transcription-translate/pkg/usecase/translate"
 )
 
 var (
