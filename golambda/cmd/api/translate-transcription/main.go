@@ -41,7 +41,7 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 	}
 
 	// Initialise S3 client
-	s3Client, err := utils.GetAWSS3Client(ctx)
+	s3Client, err := utils.GetS3Client(ctx)
 	if err != nil {
 		log.Fatalf("Error getting s3 client:%v\n", err)
 	}
