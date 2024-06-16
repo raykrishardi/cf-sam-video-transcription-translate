@@ -1,4 +1,4 @@
-package s3
+package utils
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-func (repo *S3Repository) GetS3Client(ctx context.Context) (*s3.Client, error) {
+func GetAWSS3Client(ctx context.Context) (*s3.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, err

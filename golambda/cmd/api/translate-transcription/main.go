@@ -4,17 +4,17 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 
 	"cf-sam-video-transcription-translate/config"
-	s3repo "cf-sam-video-transcription-translate/pkg/repository/s3"
+	osrepo "cf-sam-video-transcription-translate/pkg/repository/objectstore"
 	tlrepo "cf-sam-video-transcription-translate/pkg/repository/translate"
-	s3uc "cf-sam-video-transcription-translate/pkg/usecase/s3"
+	osuc "cf-sam-video-transcription-translate/pkg/usecase/objectstore"
 	tluc "cf-sam-video-transcription-translate/pkg/usecase/translate"
+	"cf-sam-video-transcription-translate/pkg/utils"
 
 	"cf-sam-video-transcription-translate/pkg/entity"
 )
@@ -40,32 +40,32 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 		TranslationBucketName:   DESTINATION_BUCKET_NAME,
 	}
 
+	// Initialise S3 client
+	s3Client, err := utils.GetAWSS3Client(ctx)
+	if err != nil {
+		log.Fatalf("Error getting s3 client:%v\n", err)
+	}
+
 	// Initialise repositories
-	s3Repo := s3repo.NewS3Repository(appConfig)
-	s3repo.NewS3(s3Repo)
+	s3Repo := osrepo.NewS3Repo(appConfig, s3Client)
 	tlRepo := tlrepo.NewTranslateTranscriptionRepository(appConfig)
 	tlrepo.NewTranslate(tlRepo)
 
 	// Initialise specific usecases
-	s3UC := s3uc.NewS3UseCase(ctx, s3Repo)
+	osUC := osuc.NewObjectStoreUseCase(appConfig, s3Repo)
 	tlUC := tluc.NewTranslateUseCase(ctx, tlRepo)
 
 	// Initialise global usecase (if necessary)
-	// uc := usecase.NewUseCase(nil, nil, tlUC, s3UC)
+	// uc := usecase.NewUseCase(nil, nil, tlUC, osUC)
 
 	// Business logic
 	s3GetObjectInput := entity.GetObjectInput{
 		BucketName: event.Detail.Bucket.Name,
 		Key:        event.Detail.Object.Key,
 	}
-	s3GetObjectOutput, err := s3UC.GetObject(ctx, s3GetObjectInput)
+	s3ObjectBytes, err := osUC.GetObject(ctx, s3GetObjectInput)
 	if err != nil {
 		log.Fatalf("Unable to get s3 content for key %s and bucket %s: %v\n", s3GetObjectInput.Key, s3GetObjectInput.BucketName, err)
-	}
-
-	s3ObjectBytes, err := ioutil.ReadAll(s3GetObjectOutput.Body)
-	if err != nil {
-		log.Fatalf("Error reading s3 content for key %s and bucket %s: %v\n", s3GetObjectInput.Key, s3GetObjectInput.BucketName, err)
 	}
 
 	// List of supported language code (https://docs.aws.amazon.com/translate/latest/dg/what-is-languages.html)
@@ -83,11 +83,11 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 	}
 
 	s3PutObjectInput := entity.PutObjectInput{
-		BucketName: s3UC.S3Repo.App.TranslationBucketName,
+		BucketName: appConfig.TranslationBucketName,
 		Key:        fmt.Sprintf("%s/%s", *translateDocumentInput.TargetLanguageCode, event.Detail.Object.Key),
 		Body:       translateDocumentOutput.TranslatedDocument.Content,
 	}
-	_, err = s3UC.PutObject(ctx, s3PutObjectInput)
+	err = osUC.PutObject(ctx, s3PutObjectInput)
 	if err != nil {
 		log.Fatalf("Unable to upload translated content to key %s and bucket %s: %v\n", s3PutObjectInput.Key, s3PutObjectInput.BucketName, err)
 	}
