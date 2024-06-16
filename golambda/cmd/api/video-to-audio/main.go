@@ -14,7 +14,7 @@ import (
 	mcuc "cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
 
 	"cf-sam-video-transcription-translate/pkg/entity"
-	"cf-sam-video-transcription-translate/pkg/utility"
+	"cf-sam-video-transcription-translate/pkg/utils"
 )
 
 var (
@@ -56,7 +56,7 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 	convertMP4ToMP3Input := entity.ConvertMP4ToMP3Input{
 		Role:     appConfig.MediaConvertIamRoleArn,
 		InS3Uri:  fmt.Sprintf("s3://%s/%s", event.Detail.Bucket.Name, event.Detail.Object.Key),
-		OutS3Uri: fmt.Sprintf("s3://%s/%s/", appConfig.AudioBucketName, utility.Split(event.Detail.Object.Key, "/", true, false)),
+		OutS3Uri: fmt.Sprintf("s3://%s/%s/", appConfig.AudioBucketName, utils.GetDirPathOrFileName(event.Detail.Object.Key, "/", true, false)),
 		OutMP3Settings: entity.MP3Settings{
 			RateControlMode: "CBR",
 			BitRate:         &bitRate,

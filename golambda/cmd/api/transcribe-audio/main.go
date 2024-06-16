@@ -14,7 +14,7 @@ import (
 	truc "cf-sam-video-transcription-translate/pkg/usecase/transcribe"
 
 	"cf-sam-video-transcription-translate/pkg/entity"
-	"cf-sam-video-transcription-translate/pkg/utility"
+	"cf-sam-video-transcription-translate/pkg/utils"
 )
 
 var (
@@ -49,9 +49,9 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 
 	// Business logic
 	autoLanguageDetection := true
-	inBucketDirPath := utility.Split(event.Detail.Object.Key, "/", true, false)
-	inBucketFileName := utility.Split(event.Detail.Object.Key, "/", false, true) // file name with extension (e.g. hello.mp3)
-	inBucketFileNameWithoutExtension := utility.GetFileNameOrExtension(inBucketFileName, false)
+	inBucketDirPath := utils.GetDirPathOrFileName(event.Detail.Object.Key, "/", true, false)
+	inBucketFileName := utils.GetDirPathOrFileName(event.Detail.Object.Key, "/", false, true) // file name with extension (e.g. hello.mp3)
+	inBucketFileNameWithoutExtension := utils.GetFileNameOrExtension(inBucketFileName, false)
 	outBucketObjectKey := fmt.Sprintf("%s/%s", inBucketDirPath, inBucketFileNameWithoutExtension)
 	transcribeMP3ToSRTInput := entity.TranscribeMP3ToSRTInput{
 		OutBucketName:      appConfig.TranscriptionBucketName,
