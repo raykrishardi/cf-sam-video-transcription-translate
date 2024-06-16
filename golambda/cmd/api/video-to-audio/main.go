@@ -41,12 +41,17 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 		AWSMediaConvertEndpoint: AWS_MEDIA_CONVERT_ENDPOINT,
 	}
 
+	// Initialise AWS MediaConvert client
+	awsMediaConvertClient, err := utils.GetAWSMediaConvertClient(ctx, appConfig.AWSMediaConvertEndpoint)
+	if err != nil {
+		log.Fatalf("Error getting AWS MediaConvert client:%v\n", err)
+	}
+
 	// Initialise repositories
-	mcRepo := mcrepo.NewMediaConvertRepository(appConfig)
-	mcrepo.NewMediaConvert(mcRepo)
+	awsMediaConvertRepo := mcrepo.NewAWSMediaConvertRepo(appConfig, awsMediaConvertClient)
 
 	// Initialise specific usecases
-	mcUC := mcuc.NewMediaConvertUseCase(ctx, mcRepo)
+	mcUC := mcuc.NewMediaConvertUseCase(appConfig, awsMediaConvertRepo)
 
 	// Initialise global usecase (if necessary)
 	// uc := usecase.NewUseCase(mcUC, nil)
@@ -62,18 +67,14 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 			BitRate:         &bitRate,
 		},
 	}
-	convertMP4ToMP3Output, err := mcUC.ConvertMP4ToMP3(ctx, convertMP4ToMP3Input)
+	err = mcUC.ConvertMP4ToMP3(ctx, convertMP4ToMP3Input)
 	if err != nil {
 		log.Fatalf("Unable to convert mp4 to mp3 for %s bucket: %v\n", appConfig.VideoBucketName, err)
 	}
 
-	resultBytes, err := json.Marshal(convertMP4ToMP3Output)
-	if err != nil {
-		log.Fatalf("Error serializing convertMP4ToMP3Output to JSON:%v\n", err)
-	}
-	log.Printf("result: %s\n", resultBytes)
-
-	return resultBytes, nil
+	response := fmt.Sprintf("Successfully converted  %s from mp4 to mp3", event.Detail.Object.Key)
+	log.Println(response)
+	return []byte(response), nil
 }
 
 func main() {

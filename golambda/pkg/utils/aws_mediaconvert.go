@@ -1,4 +1,4 @@
-package mediaconvert
+package utils
 
 import (
 	"context"
@@ -7,14 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mediaconvert"
 )
 
-func (repo *MediaConvertRepository) GetMediaConvertClient(ctx context.Context) (*mediaconvert.Client, error) {
+func GetAWSMediaConvertClient(ctx context.Context, endpoint string) (*mediaconvert.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	mediaConvertClient := mediaconvert.NewFromConfig(cfg, func(o *mediaconvert.Options) {
-		o.BaseEndpoint = &repo.App.AWSMediaConvertEndpoint
+		o.BaseEndpoint = &endpoint
 	})
 
 	return mediaConvertClient, nil
