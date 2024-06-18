@@ -1,4 +1,4 @@
-package translate
+package utils
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/translate"
 )
 
-func (repo *TranslateTranscriptionRepository) GetTranslateClient(ctx context.Context) (*translate.Client, error) {
+func GetTranslateClient(ctx context.Context) (*translate.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, err

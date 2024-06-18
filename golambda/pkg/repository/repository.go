@@ -17,3 +17,7 @@ type ObjectStoreRepo interface {
 type TranscribeRepo interface {
 	TranscribeMP3ToSRT(ctx context.Context, params entity.TranscribeMP3ToSRTInput) error
 }
+
+type TranslateRepo interface {
+	TranslateDocument(ctx context.Context, params entity.TranslateDocumentInput) ([]byte, error)
+}
