@@ -37,12 +37,17 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 		TranscriptionBucketName: DESTINATION_BUCKET_NAME,
 	}
 
+	// Initialise Transcribe client
+	awsTranscribeClient, err := utils.GetTranscribeClient(ctx, appConfig.AWSRegion)
+	if err != nil {
+		log.Fatalf("Error getting transcribe client:%v\n", err)
+	}
+
 	// Initialise repositories
-	trRepo := trrepo.NewTranscribeRepository(appConfig)
-	trrepo.NewTranscribe(trRepo)
+	awsTranscribeRepo := trrepo.NewAWSTranscribeRepo(appConfig, awsTranscribeClient)
 
 	// Initialise specific usecases
-	trUC := truc.NewTranscribeUseCase(ctx, trRepo)
+	trUC := truc.NewTranscribeUseCase(appConfig, awsTranscribeRepo)
 
 	// Initialise global usecase (if necessary)
 	// uc := usecase.NewUseCase(nil, trUC)
@@ -60,18 +65,14 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 		InFileName:         inBucketFileName,
 		IdentifyLanguage:   &autoLanguageDetection,
 	}
-	transcribeMP3ToSRTOutput, err := trUC.TranscribeMP3ToSRT(ctx, transcribeMP3ToSRTInput)
+	err = trUC.TranscribeRepo.TranscribeMP3ToSRT(ctx, transcribeMP3ToSRTInput)
 	if err != nil {
 		log.Fatalf("Unable to transcribe mp3 from %s bucket: %v\n", appConfig.AudioBucketName, err)
 	}
 
-	resultBytes, err := json.Marshal(transcribeMP3ToSRTOutput)
-	if err != nil {
-		log.Fatalf("Error serializing transcribeMP3ToSRTOutput to JSON:%v\n", err)
-	}
-	log.Printf("result: %s\n", resultBytes)
-
-	return resultBytes, nil
+	response := fmt.Sprintf("Successfully transcribed %s mp3 file", inBucketFileName)
+	log.Println(response)
+	return []byte(response), nil
 }
 
 func main() {

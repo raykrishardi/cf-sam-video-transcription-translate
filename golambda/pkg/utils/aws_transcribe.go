@@ -1,4 +1,4 @@
-package transcribe
+package utils
 
 import (
 	"context"
@@ -7,14 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/transcribe"
 )
 
-func (repo *TranscribeRepository) GetTranscribeClient(ctx context.Context) (*transcribe.Client, error) {
+func GetTranscribeClient(ctx context.Context, region string) (*transcribe.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	transcribeClient := transcribe.NewFromConfig(cfg, func(o *transcribe.Options) {
-		o.Region = repo.App.AWSRegion
+		o.Region = region
 	})
 
 	return transcribeClient, nil

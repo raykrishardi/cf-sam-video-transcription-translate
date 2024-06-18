@@ -13,3 +13,7 @@ type ObjectStoreRepo interface {
 	GetObject(ctx context.Context, params entity.GetObjectInput) ([]byte, error)
 	PutObject(ctx context.Context, params entity.PutObjectInput) error
 }
+
+type TranscribeRepo interface {
+	TranscribeMP3ToSRT(ctx context.Context, params entity.TranscribeMP3ToSRTInput) error
+}

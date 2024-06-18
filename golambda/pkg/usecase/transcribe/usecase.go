@@ -1,59 +1,18 @@
 package transcribe
 
 import (
-	trrepo "cf-sam-video-transcription-translate/pkg/repository/transcribe"
-	"context"
-	"fmt"
-
-	"github.com/aws/aws-sdk-go-v2/service/transcribe"
-	"github.com/aws/aws-sdk-go-v2/service/transcribe/types"
-
-	"cf-sam-video-transcription-translate/pkg/entity"
-	"cf-sam-video-transcription-translate/pkg/utils"
+	"cf-sam-video-transcription-translate/config"
+	"cf-sam-video-transcription-translate/pkg/repository"
 )
 
 type TranscribeUseCase struct {
-	TranscribeRepo *trrepo.TranscribeRepository
-	Client         *transcribe.Client
+	AppConfig      *config.AppConfig
+	TranscribeRepo repository.TranscribeRepo
 }
 
-func NewTranscribeUseCase(ctx context.Context, trRepo *trrepo.TranscribeRepository) *TranscribeUseCase {
-	uc := &TranscribeUseCase{}
-
-	client, err := trRepo.GetTranscribeClient(ctx)
-	if err != nil {
-		return uc
+func NewTranscribeUseCase(appConfig *config.AppConfig, transcribeRepo repository.TranscribeRepo) *TranscribeUseCase {
+	return &TranscribeUseCase{
+		AppConfig:      appConfig,
+		TranscribeRepo: transcribeRepo,
 	}
-
-	uc.TranscribeRepo = trRepo
-	uc.Client = client
-
-	return uc
-}
-
-func (uc *TranscribeUseCase) TranscribeMP3ToSRT(ctx context.Context, params entity.TranscribeMP3ToSRTInput) (*transcribe.StartTranscriptionJobOutput, error) {
-	// Specify the starting value that is assigned to the first subtitle segment. The
-	// default start index for Amazon Transcribe is 0 , which differs from the more
-	// widely used standard of 1 . If you're uncertain which value to use, we recommend
-	// choosing 1 , as this may improve compatibility with other services.
-	defaultSubtitleOutputStartIndex := int32(1)
-
-	jobName := fmt.Sprintf("%s-%s", params.InFileName, utils.GetRandomString(5))
-	outputKeyJSON := fmt.Sprintf("%s.json", *params.OutBucketObjectKey)
-	stji := &transcribe.StartTranscriptionJobInput{
-		Media: &types.Media{
-			MediaFileUri: &params.InS3Uri,
-		},
-		MediaFormat:          types.MediaFormatMp3,
-		TranscriptionJobName: &jobName,
-		IdentifyLanguage:     params.IdentifyLanguage,
-		OutputBucketName:     &params.OutBucketName,
-		OutputKey:            &outputKeyJSON,
-		Subtitles: &types.Subtitles{
-			Formats:          []types.SubtitleFormat{types.SubtitleFormatSrt},
-			OutputStartIndex: &defaultSubtitleOutputStartIndex,
-		},
-	}
-
-	return uc.Client.StartTranscriptionJob(ctx, stji)
 }
