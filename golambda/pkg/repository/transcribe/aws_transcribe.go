@@ -1,11 +1,14 @@
 package transcribe
 
 import (
-	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/entity"
-	"cf-sam-video-transcription-translate/pkg/utils"
 	"context"
 	"fmt"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/utils"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
 
 	"github.com/aws/aws-sdk-go-v2/service/transcribe"
 	"github.com/aws/aws-sdk-go-v2/service/transcribe/types"

@@ -1,10 +1,10 @@
 package usecase
 
 import (
-	mcuc "cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
-	osuc "cf-sam-video-transcription-translate/pkg/usecase/objectstore"
-	truc "cf-sam-video-transcription-translate/pkg/usecase/transcribe"
-	tluc "cf-sam-video-transcription-translate/pkg/usecase/translate"
+	mcuc "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
+	osuc "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/usecase/objectstore"
+	truc "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/usecase/transcribe"
+	tluc "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/usecase/translate"
 )
 
 type UseCase struct {

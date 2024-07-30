@@ -2,10 +2,12 @@ package objectstore
 
 import (
 	"bytes"
-	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/entity"
 	"context"
 	"io"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )

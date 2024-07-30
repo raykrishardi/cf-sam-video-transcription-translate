@@ -1,11 +1,12 @@
 package mediaconvert
 
 import (
-	"cf-sam-video-transcription-translate/config"
 	"context"
 
-	"cf-sam-video-transcription-translate/pkg/entity"
-	"cf-sam-video-transcription-translate/pkg/repository"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository"
 )
 
 type MediaConvertUseCase struct {

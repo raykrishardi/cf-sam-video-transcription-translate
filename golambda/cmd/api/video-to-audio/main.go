@@ -9,12 +9,15 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 
-	"cf-sam-video-transcription-translate/config"
-	mcrepo "cf-sam-video-transcription-translate/pkg/repository/mediaconvert"
-	mcuc "cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
+	mcuc "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/usecase/mediaconvert"
 
-	"cf-sam-video-transcription-translate/pkg/entity"
-	"cf-sam-video-transcription-translate/pkg/utils"
+	mcrepo "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository/mediaconvert"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/utils"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
 )
 
 var (

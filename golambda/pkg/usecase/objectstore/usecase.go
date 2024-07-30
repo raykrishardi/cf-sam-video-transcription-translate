@@ -1,11 +1,12 @@
 package objectstore
 
 import (
-	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/repository"
 	"context"
 
-	"cf-sam-video-transcription-translate/pkg/entity"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
 )
 
 type ObjectStoreUseCase struct {

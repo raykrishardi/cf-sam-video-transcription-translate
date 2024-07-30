@@ -1,8 +1,8 @@
 package transcribe
 
 import (
-	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/repository"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository"
 )
 
 type TranscribeUseCase struct {

@@ -1,9 +1,11 @@
 package mediaconvert
 
 import (
-	"cf-sam-video-transcription-translate/config"
-	"cf-sam-video-transcription-translate/pkg/entity"
 	"context"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
 
 	"github.com/aws/aws-sdk-go-v2/service/mediaconvert"
 	"github.com/aws/aws-sdk-go-v2/service/mediaconvert/types"

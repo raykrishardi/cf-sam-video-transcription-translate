@@ -9,14 +9,19 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 
-	"cf-sam-video-transcription-translate/config"
-	osrepo "cf-sam-video-transcription-translate/pkg/repository/objectstore"
-	tlrepo "cf-sam-video-transcription-translate/pkg/repository/translate"
-	osuc "cf-sam-video-transcription-translate/pkg/usecase/objectstore"
-	tluc "cf-sam-video-transcription-translate/pkg/usecase/translate"
-	"cf-sam-video-transcription-translate/pkg/utils"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/utils"
 
-	"cf-sam-video-transcription-translate/pkg/entity"
+	tluc "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/usecase/translate"
+
+	osuc "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/usecase/objectstore"
+
+	tlrepo "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository/translate"
+
+	osrepo "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository/objectstore"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
 )
 
 var (

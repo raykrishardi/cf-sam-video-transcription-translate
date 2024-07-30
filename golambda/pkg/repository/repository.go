@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"cf-sam-video-transcription-translate/pkg/entity"
 	"context"
+
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
 )
 
 type MediaConvertRepo interface {
