@@ -2,7 +2,7 @@
     Metadata:
       BuildMethod: go1.x
     Properties:
-      CodeUri: golambda/cmd/api/video-to-audio/
+      CodeUri: cmd/api/video-to-audio/
       Handler: bootstrap
       Runtime: provided.al2
       Architectures:

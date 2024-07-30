@@ -2,7 +2,7 @@
     Metadata:
       BuildMethod: go1.x
     Properties:
-      CodeUri: golambda/cmd/api/transcribe-audio/
+      CodeUri: cmd/api/transcribe-audio/
       Handler: bootstrap
       Runtime: provided.al2
       Architectures:

@@ -2,7 +2,7 @@
     Metadata:
       BuildMethod: go1.x
     Properties:
-      CodeUri: golambda/cmd/api/translate-transcription/
+      CodeUri: cmd/api/translate-transcription/
       Handler: bootstrap
       Runtime: provided.al2
       Architectures:
