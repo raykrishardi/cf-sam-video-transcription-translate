@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/utils"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/utils"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/entity"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/config"
 
 	"github.com/aws/aws-sdk-go-v2/service/transcribe"
 	"github.com/aws/aws-sdk-go-v2/service/transcribe/types"
