@@ -27,6 +27,6 @@ require (
 	github.com/aws/smithy-go v1.16.0 // indirect
 )
 
-module github.com/raykrishardi/cf-sam-video-transcription-translate/golambda
+module github.com/raykrishardi/cf-sam-video-transcription-translate
 
 go 1.17

@@ -1,8 +1,8 @@
 package transcribe
 
 import (
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/config"
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/repository"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository"
 )
 
 type TranscribeUseCase struct {

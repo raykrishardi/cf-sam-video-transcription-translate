@@ -9,15 +9,15 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 
-	truc "github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/usecase/transcribe"
+	truc "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/usecase/transcribe"
 
-	trrepo "github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/repository/transcribe"
+	trrepo "github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository/transcribe"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/config"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/utils"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/utils"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/entity"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
 )
 
 var (

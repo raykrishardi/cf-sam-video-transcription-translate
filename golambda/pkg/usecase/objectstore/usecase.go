@@ -3,10 +3,10 @@ package objectstore
 import (
 	"context"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/config"
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/repository"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/config"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/repository"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/entity"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
 )
 
 type ObjectStoreUseCase struct {

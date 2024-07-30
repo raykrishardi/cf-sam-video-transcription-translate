@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/raykrishardi/cf-sam-video-transcription-translate/golambda/pkg/entity"
+	"github.com/raykrishardi/cf-sam-video-transcription-translate/pkg/entity"
 )
 
 type MediaConvertRepo interface {
