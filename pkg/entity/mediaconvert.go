@@ -8,7 +8,7 @@ type ConvertMP4ToMP3Input struct {
 }
 
 type MP3Settings struct {
-	RateControlMode string
-	VbrQuality      *int32
-	BitRate         *int32
+	RateControlMode string `json:"rate_control_mode"`
+	VbrQuality      *int32 `json:"vbr_quality,omitempty"`
+	BitRate         *int32 `json:"bit_rate,omitempty"`
 }
