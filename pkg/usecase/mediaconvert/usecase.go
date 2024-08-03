@@ -21,6 +21,6 @@ func NewMediaConvertUseCase(appConfig *config.AppConfig, mediaConvertRepo reposi
 	}
 }
 
-func (uc *MediaConvertUseCase) ConvertMP4ToMP3(ctx context.Context, params entity.ConvertMP4ToMP3Input) error {
+func (uc *MediaConvertUseCase) ConvertMP4ToMP3(ctx context.Context, params entity.ConvertMP4ToMP3Input) (string, error) {
 	return uc.MediaConvertRepo.ConvertMP4ToMP3(ctx, params)
 }

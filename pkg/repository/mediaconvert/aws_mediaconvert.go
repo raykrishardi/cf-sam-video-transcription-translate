@@ -23,7 +23,7 @@ func NewAWSMediaConvertRepo(app *config.AppConfig, client *mediaconvert.Client) 
 	}
 }
 
-func (r *AWSMediaConvertRepo) ConvertMP4ToMP3(ctx context.Context, params entity.ConvertMP4ToMP3Input) error {
+func (r *AWSMediaConvertRepo) ConvertMP4ToMP3(ctx context.Context, params entity.ConvertMP4ToMP3Input) (string, error) {
 	inAudioSelectors := map[string]types.AudioSelector{
 		"Audio Selector 1": {
 			DefaultSelection: types.AudioDefaultSelectionDefault,
@@ -70,10 +70,10 @@ func (r *AWSMediaConvertRepo) ConvertMP4ToMP3(ctx context.Context, params entity
 		},
 	}
 
-	_, err := r.Client.CreateJob(ctx, cji)
+	cjo, err := r.Client.CreateJob(ctx, cji)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return *cjo.Job.Id, nil
 }

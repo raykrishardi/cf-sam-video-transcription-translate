@@ -70,7 +70,7 @@ func handler(ctx context.Context, event entity.AWSEventBridgeS3Event) ([]byte, e
 			BitRate:         &bitRate,
 		},
 	}
-	err = mcUC.ConvertMP4ToMP3(ctx, convertMP4ToMP3Input)
+	_, err = mcUC.ConvertMP4ToMP3(ctx, convertMP4ToMP3Input)
 	if err != nil {
 		log.Fatalf("Unable to convert mp4 to mp3 for %s bucket: %v\n", appConfig.VideoBucketName, err)
 	}
