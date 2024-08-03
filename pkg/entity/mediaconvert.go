@@ -12,3 +12,11 @@ type MP3Settings struct {
 	VbrQuality      *int32 `json:"vbr_quality,omitempty"`
 	BitRate         *int32 `json:"bit_rate,omitempty"`
 }
+
+type GetJobInput struct {
+	ID string `json:"id"`
+}
+
+type GetJobOutput struct {
+	Status string `json:"status"`
+}

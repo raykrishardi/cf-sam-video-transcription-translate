@@ -8,6 +8,7 @@ import (
 
 type MediaConvertRepo interface {
 	ConvertMP4ToMP3(ctx context.Context, params entity.ConvertMP4ToMP3Input) (string, error)
+	GetJob(ctx context.Context, params entity.GetJobInput) (entity.GetJobOutput, error)
 }
 
 type ObjectStoreRepo interface {

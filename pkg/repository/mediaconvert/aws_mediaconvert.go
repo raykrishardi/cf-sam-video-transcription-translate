@@ -77,3 +77,20 @@ func (r *AWSMediaConvertRepo) ConvertMP4ToMP3(ctx context.Context, params entity
 
 	return *cjo.Job.Id, nil
 }
+
+func (r *AWSMediaConvertRepo) GetJob(ctx context.Context, params entity.GetJobInput) (entity.GetJobOutput, error) {
+	output := entity.GetJobOutput{}
+
+	gji := &mediaconvert.GetJobInput{
+		Id: &params.ID,
+	}
+
+	gjo, err := r.Client.GetJob(ctx, gji)
+	if err != nil {
+		return output, err
+	}
+
+	output.Status = string(gjo.Job.Status)
+
+	return output, nil
+}
